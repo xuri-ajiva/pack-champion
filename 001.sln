@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toolkit", "toolkit\toolkit.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalsePositive", "PalsePositive\PalsePositive.csproj", "{66BE1CA4-240B-4941-96E6-812249CE9255}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurstCompiler", "BurstCompiler\BurstCompiler.csproj", "{C61DFAA5-DC81-48B1-A22A-9C4DF4EF297B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buildTests", "buildTests\buildTests.csproj", "{66833676-941D-4521-8F35-67A7689828EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{66BE1CA4-240B-4941-96E6-812249CE9255}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66BE1CA4-240B-4941-96E6-812249CE9255}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66BE1CA4-240B-4941-96E6-812249CE9255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C61DFAA5-DC81-48B1-A22A-9C4DF4EF297B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C61DFAA5-DC81-48B1-A22A-9C4DF4EF297B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C61DFAA5-DC81-48B1-A22A-9C4DF4EF297B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C61DFAA5-DC81-48B1-A22A-9C4DF4EF297B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66833676-941D-4521-8F35-67A7689828EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66833676-941D-4521-8F35-67A7689828EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66833676-941D-4521-8F35-67A7689828EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66833676-941D-4521-8F35-67A7689828EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

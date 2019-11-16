@@ -25,7 +25,6 @@ namespace toolkit
         {
             string[] FileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-            string s = "";
 
             foreach (string File in FileList)
                 checkedListBox1.Items.Add(File);
@@ -47,8 +46,10 @@ namespace toolkit
         string temp_arch;
         private void button1_Click(object sender, EventArgs e)
         {
+            Program.BUILDEXE();
+
             var of = new SaveFileDialog();
-            of.Filter = "All Files|*.*|Executable|*.exe";
+            of.Filter = "Executable *.exe|*.exe|All Files *.*|*.*";
             if (of.ShowDialog() == DialogResult.OK)
             {
                 temp_arch = of.FileName + ".7z";
@@ -135,6 +136,16 @@ namespace toolkit
                     checkedListBox1.Items.AddRange(o.FileNames);
                 }
                 catch { }
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var of = new OpenFileDialog();
+            of.Filter = "Executable *.exe|*.exe|All Files *.*|*.*";
+            if(of.ShowDialog() == DialogResult.OK)
+            {
+                Program.custom = of.FileName;
             }
         }
     }

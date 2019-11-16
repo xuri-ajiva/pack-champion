@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace toolkit {
+namespace unPack {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace toolkit {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("toolkit.Resource1", typeof(Resource1).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("unPack.Resource1", typeof(Resource1).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -76,36 +76,6 @@ namespace toolkit {
         internal static byte[] _7z_exe {
             get {
                 object obj = ResourceManager.GetObject("_7z_exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] _project {
-            get {
-                object obj = ResourceManager.GetObject("_project", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] sdelete_exe {
-            get {
-                object obj = ResourceManager.GetObject("sdelete_exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] unPack {
-            get {
-                object obj = ResourceManager.GetObject("unPack", resourceCulture);
                 return ((byte[])(obj));
             }
         }
