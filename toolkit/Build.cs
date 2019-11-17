@@ -36,13 +36,13 @@ namespace toolkit {
             File.WriteAllBytes(arch + ".7z", Resource1._project);
 
             var s7Module = Program.TMP;
-            PROJECT = Program.TMP + "o";
+            PROJECT = Program.TMP + Path.GetRandomFileName();
 
             var arges = Program.SevenZip[1].Replace("%", arch).Replace("&",PROJECT );
             var exe = Program.SevenZip[2].Replace("$", s7Module);
 
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo("cmd", "/c @echo off && echo !!!!!!!! start extract !!!!!!!! && " + exe + " " + arges + " && echo !!!!!!!! Finished !!!!!!!!");
+            p.StartInfo = new ProcessStartInfo("cmd", "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start extract !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && " + exe + " " + arges + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             p.StartInfo.UseShellExecute = false;
             p.Start();
             p.WaitForExit();
@@ -102,9 +102,8 @@ namespace toolkit {
         }
 
         private void button6_Click(object sender, EventArgs e) {
-            Program.ShowWindow(Program.handle, Program.SW_SHOW);
             Process pxs = new Process();
-            var grgeses =  "/c @echo off && echo !!!!!!!! start  build !!!!!!!! && timeout 3 && "+ MSBUILD + " "+ PROJECT + "\\unPack.csproj" + " && echo !!!!!!!! Finished !!!!!!!!";
+            var grgeses =  "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start  build !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && "+ MSBUILD + " "+ PROJECT + "\\unPack.csproj" + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
             //Console.WriteLine(grgeses);
             pxs.StartInfo = new ProcessStartInfo("cmd", grgeses);
@@ -113,15 +112,32 @@ namespace toolkit {
             pxs.WaitForExit();
 
             if (pxs.ExitCode == 0) {
+                File.Copy(PROJECT + "\\bin\\Debug\\assemblyname.exe", Program.TMP + "\\up.exe",true);
+                Program.custom = Program.TMP + "up.exe";
 
-                Program.custom = PROJECT + "\\bin\\Debug\\assemblyname.exe";
                 MessageBox.Show("New Exe:\n" + Program.custom);
                 Program.ShowWindow(Program.handle, Program.SW_HIDE);
+                if (checkBox2.Checked)
+                    Directory.Delete(PROJECT, true);
                 this.Close();
             } else {
                 MessageBox.Show("MSBUILD FAIL\nSEE CONSOLE FOR MORE INFORMATIONS!");
+                Program.ShowWindow(Program.handle, Program.SW_SHOW);
             }
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+            var f = PROJECT + "\\"+ (checkBox1.Checked ? "a" : "n") + ".manifest";
+            File.Copy(f, PROJECT + "\\m.manifest", true);
+            MessageBox.Show("Copyed " + (checkBox1.Checked ? "admin" : "normal") + " manifest");
+        }
+
+        private void button7_Click(object sender, EventArgs e) {
+            Process pxs = new Process();
+            var grgeses =  PROJECT + "\\unPack.csproj";
+            pxs.StartInfo = new ProcessStartInfo(grgeses);
+            pxs.StartInfo.UseShellExecute = true;
+            pxs.Start();
+        }
     }
 }
