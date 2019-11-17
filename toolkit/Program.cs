@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,17 @@ namespace toolkit {
         /// </summary>
         /// 
 
+        public static IntPtr handle = GetConsoleWindow();
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        public const int SW_HIDE = 0;
+        public const int SW_SHOW = 5;
+
         public static readonly string TMP = Path.GetTempPath() + "#TOOLBOX#\\";
 
 
@@ -23,6 +35,7 @@ namespace toolkit {
         static readonly string IDENTY02 = string.Join("#", Enumerable.Range(0, 100).ToArray());
         [STAThread]
         static void Main() {
+            ShowWindow(handle, SW_HIDE);
             Directory.CreateDirectory(TMP);
             File.WriteAllBytes(TMP + "7z.exe", Resource1._7z_exe);
             File.WriteAllBytes(TMP + "7z.dll", Resource1._7z_dll);
@@ -51,7 +64,9 @@ namespace toolkit {
 
         internal static void BUILDEXE() {
             if (MessageBox.Show("Build Custom Assembly?", "Custom?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            var o =new OpenFileDialog();
+            build = new Build();
+            build.ShowDialog();
+            /*var o =new OpenFileDialog();
 
             string firstFileName = new   DirectoryInfo("C:\\Windows\\WinSxS").GetDirectories().Select(fi => fi.Name).FirstOrDefault(name => name .Contains("x86_msbuild") && name.Contains("4.0"));
             var msbuild = "C:\\Windows\\WinSxS\\" + firstFileName + "\\MSBuild.exe";
@@ -112,7 +127,7 @@ namespace toolkit {
             if (MessageBox.Show("Surcsess ?", "Surcsess", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                 custom = s7Out + "\\bin\\Debug\\assemblyname.exe";
                 MessageBox.Show("Custom Exe:\n" + custom);
-            }
+            }*/
         }
 
         internal static string pack(List<Item> _ls, string arch) {
@@ -186,6 +201,7 @@ namespace toolkit {
             return tmp;
         }
         public static string[] SevenZip = new string[] { "-bd -bb2 a \"%\" \"&\"", "-y -bd -bb2 e \"%.7z\" -o\"&\"", "\"$\\7z.exe\"" };
+        internal static Form build;
     }
 
 

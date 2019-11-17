@@ -80,9 +80,13 @@ namespace toolkit
                     p.WaitForExit();
                 }
 
-
-                Program.ne_file = File.Open(of.FileName, FileMode.OpenOrCreate);
-                MessageBox.Show(Program.pack(_l, temp_arch));
+                try {
+                    Program.ne_file = File.Open(of.FileName, FileMode.OpenOrCreate);
+                    MessageBox.Show(Program.pack(_l, temp_arch));
+                }
+                finally {
+                    Program.ne_file.Close();
+                }
             }
         }
 
@@ -93,7 +97,8 @@ namespace toolkit
             Process.Start("cmd", "/k \"" + Bash + "\"");
             Environment.Exit(0);
         }
-        public static readonly string Bash = "@echo off && echo Deleating Files! && timeout 5 && " + Path.GetTempPath() + "sdel.exe -p 30 -r -s \"" + Program.TMP + "\" && " + Path.GetTempPath() + "sdel.exe -p 30 -r \"" + Application.ExecutablePath + "\" && del \"" + Path.GetTempPath() + "sdel.exe\" && pause";
+
+        public static readonly string Bash = "@echo off && echo Deleating Files! && timeout 5 && " + Path.GetTempPath() + "sdel.exe -p 8 -r -s \"" + Program.TMP + "\" && " + Path.GetTempPath() + "sdel.exe -p 8 -r \"" + Application.ExecutablePath + "\" && del \"" + Path.GetTempPath() + "sdel.exe\" && pause";
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -147,6 +152,15 @@ namespace toolkit
             {
                 Program.custom = of.FileName;
             }
+        }
+
+        private void clearListToolStripMenuItem1_Click(object sender, EventArgs e) {
+            checkedListBox1.Items.Clear();
+        }
+
+        private void button6_Click(object sender, EventArgs e) {
+            Program.build = new Build();
+            Program.build.ShowDialog(this);
         }
     }
 }
