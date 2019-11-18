@@ -152,7 +152,7 @@ namespace toolkit {
             }
 
             if (pxs.ExitCode == 0) {
-                File.Copy(PROJECT + "\\bin\\Debug\\assemblyname.exe", Program.TMP + "\\up.exe", true);
+                File.Copy(PROJECT + "\\bin\\Debug\\"+textBox6.Text, Program.TMP + "\\up.exe", true);
                 Program.EXE = Program.TMP + "up.exe";
 
                 Program.ShowWindow(Program.handle, Program.SW_HIDE);
@@ -171,7 +171,7 @@ namespace toolkit {
                 }
             } else {
                 MessageBox.Show("MSBUILD FAIL\nSEE CONSOLE FOR MORE INFORMATIONS!");
-                Program.ShowWindow(Program.handle, Program.SW_SHOW);
+                //Program.ShowWindow(Program.handle, Program.SW_SHOW);
             }
         }
         void STARTVS() {
@@ -185,7 +185,7 @@ namespace toolkit {
             var l = new List<Item>();
             foreach (var item in checkedListBox1.Items) {
                 var i = (string) item;
-                l.Add(new Item(Path.GetFileName(i), Path.GetFileName(i).Replace(".", "_")));
+                l.Add(new Item(Path.GetFileName(i), Path.GetFileName(i).Replace(".", "_").Replace("-","_").Replace(" ","")));
                 File.Copy(i, PROJECT + "\\" + Path.GetFileName(i), true);
             }
 
@@ -199,7 +199,7 @@ namespace toolkit {
         void OPENICON() {
             var of = new OpenFileDialog();
             of.Filter = "Icon *.ico|*.ico";
-            if (of.ShowDialog() == DialogResult.Yes) {
+            if (of.ShowDialog() == DialogResult.OK) {
                 File.Copy(of.FileName, PROJECT + "\\5.ico", true);
                 MessageBox.Show("Copyed Icon!");
             }
@@ -245,7 +245,6 @@ namespace toolkit {
             else MSBUILD = ERROR;
         }
         void EXTRACTPROJECT() {
-
             var arch = Program.TMP+ "project";
             File.WriteAllBytes(arch + ".7z", Resource1._project);
 
@@ -278,5 +277,16 @@ namespace toolkit {
         }
         void CLEARCHECKBOXLIST() => checkedListBox1.Items.Clear();
         private void CLEARTEXTBOXESTEXT() => richTextBox1.Text = "";
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox2.Checked)
+                if (MessageBox.Show("Change output is usefull but you need to de this at your own!\n1. Chick EXPLORE\n2. open unPack2.csproj with your custom editor\n3. Chamge name to whatever you want (chek if filename is valed)\n4. Write The name in The Apearing Textbox !! wrong name -> Exception !!\n\nNote! this can crahsh this programm sow all you changes are gon (they are still in temp folder but with random name\nGood lock =]", "Your Choise", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                    textBox6.Visible = true;
+                } else {
+                    checkBox2.Checked = false;
+                    checkBox2.CheckState = CheckState.Unchecked;
+                }
+            else { textBox6.Visible = false; textBox6.Text = "assemblyname.exe"; }
+        }
     }
 }

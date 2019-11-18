@@ -56,6 +56,8 @@
             this.clearListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
             this.OPTIONS.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -261,7 +263,7 @@
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Location = new System.Drawing.Point(219, 193);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(293, 33);
+            this.button7.Size = new System.Drawing.Size(293, 29);
             this.button7.TabIndex = 18;
             this.button7.Text = "OPEN Priject in Visual studio (code)";
             this.button7.UseVisualStyleBackColor = true;
@@ -269,6 +271,8 @@
             // 
             // OPTIONS
             // 
+            this.OPTIONS.Controls.Add(this.textBox6);
+            this.OPTIONS.Controls.Add(this.checkBox2);
             this.OPTIONS.Controls.Add(this.label3);
             this.OPTIONS.Controls.Add(this.button7);
             this.OPTIONS.Controls.Add(this.textBox1);
@@ -288,7 +292,7 @@
             this.OPTIONS.Controls.Add(this.label4);
             this.OPTIONS.Location = new System.Drawing.Point(12, 2);
             this.OPTIONS.Name = "OPTIONS";
-            this.OPTIONS.Size = new System.Drawing.Size(521, 251);
+            this.OPTIONS.Size = new System.Drawing.Size(521, 261);
             this.OPTIONS.TabIndex = 19;
             this.OPTIONS.TabStop = false;
             // 
@@ -427,6 +431,27 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12Click);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(11, 231);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(170, 24);
+            this.checkBox2.TabIndex = 19;
+            this.checkBox2.Text = "CUSTOMOUTPPUT";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // textBox6
+            // 
+            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.textBox6.Location = new System.Drawing.Point(219, 234);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(293, 20);
+            this.textBox6.TabIndex = 20;
+            this.textBox6.Text = "assemblyname.exe";
+            this.textBox6.Visible = false;
+            // 
             // Build
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -493,5 +518,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearListToolStripMenuItem;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.TextBox textBox6;
     }
 }
