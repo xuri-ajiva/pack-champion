@@ -65,69 +65,9 @@ namespace toolkit {
         internal static void BUILDEXE() {
             if (MessageBox.Show("Build Custom Assembly?", "Custom?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
             build = new Build();
+            build.exitonbuild.Checked = true;
+
             build.ShowDialog();
-            /*var o =new OpenFileDialog();
-
-            string firstFileName = new   DirectoryInfo("C:\\Windows\\WinSxS").GetDirectories().Select(fi => fi.Name).FirstOrDefault(name => name .Contains("x86_msbuild") && name.Contains("4.0"));
-            var msbuild = "C:\\Windows\\WinSxS\\" + firstFileName + "\\MSBuild.exe";
-            o.FileName = msbuild;
-            o.InitialDirectory = Path.GetDirectoryName(msbuild);
-            Console.WriteLine(msbuild);
-            if (!File.Exists(msbuild)) {
-                MessageBox.Show("Pleas Locate MSBuild.exe\nHint:\nC:\\Windows\\WinSxS\\x86_msbuild_[***]4.0.15788.0_none_[***]\\MSBuild.exe\n" + firstFileName, "Locate MSBuild.exe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                o.Title = "Pleas Locate MSBuild.exe";
-                o.Filter = "Executable *.exe|*.exe|All Files *.*|*.*";
-                o.InitialDirectory = "C:\\Windows\\WinSxS\\" + firstFileName;
-                if (o.ShowDialog() != DialogResult.OK) return;
-            }
-
-            var arch = TMP+ "project";
-            File.WriteAllBytes(arch + ".7z", Resource1._project);
-
-            var s7Module = TMP;
-            var s7Out = TMP + "o";
-
-            var arges = SevenZip[1].Replace("%", arch).Replace("&",s7Out );
-            var exe = SevenZip[2].Replace("$", s7Module);
-
-            Process p = new Process();
-            p.StartInfo = new ProcessStartInfo("cmd", "/c @echo off && echo !!!!!!!! start extract !!!!!!!! && timeout 2 && " + exe + " " + arges + " && echo !!!!!!!! Finished !!!!!!!! && pause");
-            p.StartInfo.UseShellExecute = true;
-            p.Start();
-            p.WaitForExit();
-
-            if (MessageBox.Show("You Can Custom The Assembly!", "Custom ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-
-                Process px = new Process();
-                px.StartInfo = new ProcessStartInfo(@"C:\Windows\notepad.exe", s7Out + "\\AssemblyInfo.cs");
-                px.StartInfo.UseShellExecute = false;
-                px.Start();
-                px.WaitForExit();
-            }
-
-            if (MessageBox.Show("You Can Custom The Icon!", "Custom ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                var of = new OpenFileDialog();
-                of.Filter = "Icon *.ico|*.ico";
-                if (of.ShowDialog() == DialogResult.Yes) {
-                    File.Copy(of.FileName, s7Out + "\\5.ico", true);
-                    MessageBox.Show("Copyed Icon");
-                }
-            }
-
-            Process pxs = new Process();
-            var grgeses =  "/c @echo off && echo !!!!!!!! start  build !!!!!!!! && timeout 2 && "+ o.FileName+ " "+ s7Out + "\\unPack.csproj" + " && echo !!!!!!!! Finished !!!!!!!! && pause";
-
-            //Console.WriteLine(grgeses);
-            pxs.StartInfo = new ProcessStartInfo("cmd", grgeses);
-            pxs.StartInfo.UseShellExecute = false;
-            pxs.Start();
-            pxs.WaitForExit();
-
-            if (MessageBox.Show("Surcsess ?", "Surcsess", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                custom = s7Out + "\\bin\\Debug\\assemblyname.exe";
-                MessageBox.Show("Custom Exe:\n" + custom);
-            }*/
         }
 
         internal static string pack(List<Item> _ls, string arch) {
@@ -201,7 +141,7 @@ namespace toolkit {
             return tmp;
         }
         public static string[] SevenZip = new string[] { "-bd -bb2 a \"%\" \"&\"", "-y -bd -bb2 e \"%.7z\" -o\"&\"", "\"$\\7z.exe\"" };
-        internal static Form build;
+        internal static Build build;
     }
 
 

@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurstCompiler", "BurstCompi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buildTests", "buildTests\buildTests.csproj", "{66833676-941D-4521-8F35-67A7689828EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toolkit2", "toolkit2.0\toolkit2.csproj", "{71B98216-721A-4F8C-8566-9DD8A3886B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unPack2", "unPack2\unPack2.csproj", "{352232FF-FE75-4F9D-9D7E-FC7C4C494950}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{66833676-941D-4521-8F35-67A7689828EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66833676-941D-4521-8F35-67A7689828EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66833676-941D-4521-8F35-67A7689828EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71B98216-721A-4F8C-8566-9DD8A3886B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71B98216-721A-4F8C-8566-9DD8A3886B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71B98216-721A-4F8C-8566-9DD8A3886B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71B98216-721A-4F8C-8566-9DD8A3886B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{352232FF-FE75-4F9D-9D7E-FC7C4C494950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{352232FF-FE75-4F9D-9D7E-FC7C4C494950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{352232FF-FE75-4F9D-9D7E-FC7C4C494950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{352232FF-FE75-4F9D-9D7E-FC7C4C494950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

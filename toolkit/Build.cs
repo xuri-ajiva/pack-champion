@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using System.Threading;
 
 namespace toolkit {
     public partial class Build : Form {
@@ -20,8 +20,6 @@ namespace toolkit {
         string ASSEMBLY = ERROR;
         public Build() {
             InitializeComponent();
-            LOCATEMSBUILD();
-            EXTRACTPROJECT();
         }
 
         private void LOCATEMSBUILD() {
@@ -32,6 +30,7 @@ namespace toolkit {
         }
 
         private void EXTRACTPROJECT() {
+
             var arch = Program.TMP+ "project";
             File.WriteAllBytes(arch + ".7z", Resource1._project);
 
@@ -44,11 +43,23 @@ namespace toolkit {
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo("cmd", "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start extract !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && " + exe + " " + arges + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             p.StartInfo.UseShellExecute = false;
-            p.Start();
-            p.WaitForExit();
+            p.StartInfo.RedirectStandardOutput = true;
+            p.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
 
             ASSEMBLY = PROJECT + "\\AssemblyInfo.cs";
             setTextBoxes();
+
+            OPTIONS.Enabled = false;
+            new Thread(() => {
+                p.Start();
+                p.BeginOutputReadLine();
+                while (!p.HasExited) {
+                    Application.DoEvents(); // This keeps your form responsive by processing events
+                }
+                this.BeginInvoke(new MethodInvoker(() => {
+                    OPTIONS.Enabled = true;
+                }));
+            }).Start();
         }
         void setTextBoxes() {
             textBox3.Text = PROJECT + "\\unPack.csproj";
@@ -76,7 +87,9 @@ namespace toolkit {
             p.StartInfo = new ProcessStartInfo("explorer", PROJECT);
             p.StartInfo.UseShellExecute = true;
             p.Start();
-            p.WaitForExit();
+            while (!p.HasExited) {
+                Application.DoEvents(); // This keeps your form responsive by processing events
+            }
         }
 
         private void button4_Click(object sender, EventArgs e) {
@@ -84,7 +97,9 @@ namespace toolkit {
             px.StartInfo = new ProcessStartInfo(@"C:\Windows\notepad.exe", ASSEMBLY);
             px.StartInfo.UseShellExecute = false;
             px.Start();
-            px.WaitForExit();
+            while (!px.HasExited) {
+                Application.DoEvents(); // This keeps your form responsive by processing events
+            }
         }
 
         private void button5_Click(object sender, EventArgs e) {
@@ -108,17 +123,28 @@ namespace toolkit {
             //Console.WriteLine(grgeses);
             pxs.StartInfo = new ProcessStartInfo("cmd", grgeses);
             pxs.StartInfo.UseShellExecute = false;
+            pxs.StartInfo.RedirectStandardOutput = true;
+            pxs.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
+
             pxs.Start();
-            pxs.WaitForExit();
+            pxs.BeginOutputReadLine();
+            while (!pxs.HasExited) {
+                Application.DoEvents(); // This keeps your form responsive by processing events
+            }
 
             if (pxs.ExitCode == 0) {
-                File.Copy(PROJECT + "\\bin\\Debug\\assemblyname.exe", Program.TMP + "\\up.exe",true);
+                File.Copy(PROJECT + "\\bin\\Debug\\assemblyname.exe", Program.TMP + "\\up.exe", true);
                 Program.custom = Program.TMP + "up.exe";
 
                 MessageBox.Show("New Exe:\n" + Program.custom);
                 Program.ShowWindow(Program.handle, Program.SW_HIDE);
-                if (checkBox2.Checked)
-                    Directory.Delete(PROJECT, true);
+                if (exitonbuild.Checked) {
+                    try {
+                        Directory.Delete(PROJECT, true);
+                    } catch (Exception esx) {
+                        MessageBox.Show(esx.Message);
+                    }
+                }
                 this.Close();
             } else {
                 MessageBox.Show("MSBUILD FAIL\nSEE CONSOLE FOR MORE INFORMATIONS!");
@@ -138,6 +164,23 @@ namespace toolkit {
             pxs.StartInfo = new ProcessStartInfo(grgeses);
             pxs.StartInfo.UseShellExecute = true;
             pxs.Start();
+        }
+
+        void SortOutputHandler(object sender, DataReceivedEventArgs e) {
+            if (string.IsNullOrEmpty(e.Data)) return;
+            Trace.WriteLine(e.Data);
+            this.BeginInvoke(new MethodInvoker(() => {
+                var se = e.Data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var s in se) {
+                    richTextBox1.AppendText((s + "\n") ?? string.Empty);
+                }
+            }));
+        }
+
+        private void Build_Load(object sender, EventArgs e) {
+            LOCATEMSBUILD();
+            EXTRACTPROJECT();
         }
     }
 }
