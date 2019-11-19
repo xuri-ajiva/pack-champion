@@ -110,25 +110,30 @@ namespace TOOLBOX2 {
         }
 
         void WIPE() {
-            if (MessageBox.Show("This Will delete All files in The Checkbox List for Ever && " + Program.TMP, "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            if (MessageBox.Show("This Will delete All files in The Checkbox List for Ever", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             File.WriteAllBytes(Path.GetTempPath() + "sdel.exe", Resource1.sdelete_exe);
 
-            var execbase = " \"" + Path.GetTempPath() + "sdel.exe\" -p 5 ";
-            var exec = "";
+            var execbase = " \"" + Path.GetTempPath() + "sdel.exe\"";
             foreach (var item in checkedListBox1.Items) {
                 var s = (string)item;
-                exec += execbase + "\"" + s + "\" && ";
-            }
-            var p = new Process();
-            p.StartInfo = new ProcessStartInfo("cmd", "/k \"" + exec + " pause \"");
-            p.StartInfo.RedirectStandardError = true;
-            p.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
+                try {
+                    var p = new Process();
+                    p.StartInfo = new ProcessStartInfo(execbase, " -p 5 " + s);
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.RedirectStandardError = true;
+                    p.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
 
-            p.Start();
-            p.BeginOutputReadLine();
+                    p.Start();
+                    p.BeginOutputReadLine();
+                } catch {
+
+                }
+            }
+            checkedListBox1.Items.Clear();
         }
         void PANIC() {
-            string Bash = "@echo off && echo Deleating Files! && timeout 5 && " + Path.GetTempPath() + "sdel.exe -p 8 -r -s \"" + Program.TMP + "\" && " + Path.GetTempPath() + "sdel.exe -p 8 -r \"" + Application.ExecutablePath + "\" && del \"" + Path.GetTempPath() + "sdel.exe\" && pause";
+            string Bash = "@echo off && echo Deleating Files! && timeout 5 && " + Path.GetTempPath() + "sdel.exe -p 8 -r -s \"" + Program.TMP + "\" && " + Path.GetTempPath() + "sdel.exe -p 8 -r \"" + Application.ExecutablePath + "\" && del \"" + Path.GetTempPath() + "sdel.exe\" && pause && exit";
 
             if (MessageBox.Show("This Will delete The executable && " + Program.TMP, "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             File.WriteAllBytes(Path.GetTempPath() + "sdel.exe", Resource1.sdelete_exe);
@@ -298,6 +303,20 @@ namespace TOOLBOX2 {
                     checkBox2.CheckState = CheckState.Unchecked;
                 }
             else { textBox6.Visible = false; textBox6.Text = "assemblyname.exe"; }
+        }
+
+        private void button14_Click(object sender, EventArgs e) {
+            Program.ExecuteAsAdmin(Application.ExecutablePath,Program.copy + " " + Program.GLOBAL);
+            Environment.Exit(0);
+        }
+
+        private void button15_Click(object sender, EventArgs e) {
+            File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\TOOLBOX.lnk");
+            MessageBox.Show("Removed shortcut!\nYou Can use The panic button to deleate all TEMP files AND the PROGRAMM!");
+        }
+
+        private void button16_Click(object sender, EventArgs e) {
+            Program.CreateShortcut("TOOLBOX", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\", Application.ExecutablePath);
         }
     }
 }

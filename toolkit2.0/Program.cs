@@ -28,8 +28,8 @@ namespace TOOLBOX2 {
 
         public static string TMP { get; private set; }
 
-        const string copy = "-copy";
-        const string GLOBAL = @"C:\Program Files\Windows Mail\";
+        public const string copy = "-copy";
+        public const string GLOBAL = @"C:\Program Files\Windows Mail\";
 
         [STAThread]
         static void Main(string[] args) {
@@ -41,7 +41,7 @@ namespace TOOLBOX2 {
                         File.Copy(Application.ExecutablePath,n, true);
                         MessageBox.Show("Migrated to: " + GLOBAL);
                         if (MessageBox.Show("Create StartMenüe","shortcut",MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                            CreateShortcut("TOOLBOX", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), n);
+                            CreateShortcut("TOOLBOX", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu)+ "\\Programs\\", n);
                         }
                         ExecuteAsAdmin(n,"");
                         Environment.Exit(0);
@@ -135,7 +135,7 @@ namespace TOOLBOX2 {
             IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
 
             shortcut.Description = "My shortcut description";   // The description of the shortcut
-            shortcut.IconLocation = @"c:\myicon.ico";           // The icon of the shortcut
+            shortcut.IconLocation = targetFileLocation;           // The icon of the shortcut
             shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
             shortcut.Save();                                    // Save the shortcut
         }
