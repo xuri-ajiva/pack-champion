@@ -1,4 +1,4 @@
-﻿namespace toolkit {
+﻿namespace TOOLBOX2 {
     partial class Build {
         /// <summary>
         /// Required designer variable.
@@ -44,6 +44,8 @@
             this.exitonbuild = new System.Windows.Forms.CheckBox();
             this.button7 = new System.Windows.Forms.Button();
             this.OPTIONS = new System.Windows.Forms.GroupBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.button8 = new System.Windows.Forms.Button();
@@ -56,8 +58,7 @@
             this.clearListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.button13 = new System.Windows.Forms.Button();
             this.OPTIONS.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -296,6 +297,27 @@
             this.OPTIONS.TabIndex = 19;
             this.OPTIONS.TabStop = false;
             // 
+            // textBox6
+            // 
+            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.textBox6.Location = new System.Drawing.Point(219, 234);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(293, 20);
+            this.textBox6.TabIndex = 20;
+            this.textBox6.Text = "assemblyname.exe";
+            this.textBox6.Visible = false;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(11, 231);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(170, 24);
+            this.checkBox2.TabIndex = 19;
+            this.checkBox2.Text = "CUSTOMOUTPPUT";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.HotTrack;
@@ -431,26 +453,18 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12Click);
             // 
-            // checkBox2
+            // button13
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(11, 231);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(170, 24);
-            this.checkBox2.TabIndex = 19;
-            this.checkBox2.Text = "CUSTOMOUTPPUT";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
-            // textBox6
-            // 
-            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.textBox6.Location = new System.Drawing.Point(219, 234);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(293, 20);
-            this.textBox6.TabIndex = 20;
-            this.textBox6.Text = "assemblyname.exe";
-            this.textBox6.Visible = false;
+            this.button13.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
+            this.button13.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button13.Location = new System.Drawing.Point(231, 269);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(81, 36);
+            this.button13.TabIndex = 27;
+            this.button13.Text = "NEW";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13Click);
             // 
             // Build
             // 
@@ -458,6 +472,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.ClientSize = new System.Drawing.Size(1108, 576);
+            this.Controls.Add(this.button13);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button8);
@@ -520,5 +535,6 @@
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Button button13;
     }
 }

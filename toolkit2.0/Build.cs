@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace toolkit {
+namespace TOOLBOX2 {
     public partial class Build : Form {
         const string ERROR = "## ERROR ##";
         string MSBUILD = ERROR;
@@ -29,6 +29,7 @@ namespace toolkit {
         private void button3_Click(object sender, EventArgs e) => BROUSEPROJEKT();
         private void button4_Click(object sender, EventArgs e) => EDITASSEMBLY();
         private void button1_Click(object sender, EventArgs e) => FINDMSBUILD();
+        private void button13Click(object sender, EventArgs e) => NEWPROJECT();
         private void button5_Click(object sender, EventArgs e) => OPENICON();
         private void button0_Click(object sender, EventArgs e) => PREPACK();
         private void button2_Click(object sender, EventArgs e) => STARTVS();
@@ -137,11 +138,12 @@ namespace toolkit {
         void BUILD() {
             PREPACK();
             Process pxs = new Process();
-            var grgeses =  "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start  build !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && "+ MSBUILD + " "+ PROJECT + "\\unPack2.csproj" + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+            var grgeses =  "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start  build !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && "+ MSBUILD + " \""+ PROJECT + "\\unPack2.csproj\"" + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
             //Console.WriteLine(grgeses);
             pxs.StartInfo = new ProcessStartInfo("cmd", grgeses);
             pxs.StartInfo.UseShellExecute = false;
+            pxs.StartInfo.CreateNoWindow = true;
             pxs.StartInfo.RedirectStandardOutput = true;
             pxs.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
 
@@ -152,7 +154,7 @@ namespace toolkit {
             }
 
             if (pxs.ExitCode == 0) {
-                File.Copy(PROJECT + "\\bin\\Debug\\"+textBox6.Text, Program.TMP + "\\up.exe", true);
+                File.Copy(PROJECT + "\\bin\\Debug\\" + textBox6.Text, Program.TMP + "\\up.exe", true);
                 Program.EXE = Program.TMP + "up.exe";
 
                 Program.ShowWindow(Program.handle, Program.SW_HIDE);
@@ -168,6 +170,8 @@ namespace toolkit {
                 s.Filter = "Executable *.exe|*.exe|All Files *.*|*.*";
                 if (s.ShowDialog() == DialogResult.OK) {
                     File.Copy(Program.EXE, s.FileName, true);
+                } else {
+                    richTextBox1.AppendText("BUILD canceled!");
                 }
             } else {
                 MessageBox.Show("MSBUILD FAIL\nSEE CONSOLE FOR MORE INFORMATIONS!");
@@ -185,7 +189,7 @@ namespace toolkit {
             var l = new List<Item>();
             foreach (var item in checkedListBox1.Items) {
                 var i = (string) item;
-                l.Add(new Item(Path.GetFileName(i), Path.GetFileName(i).Replace(".", "_").Replace("-","_").Replace(" ","")));
+                l.Add(new Item(Path.GetFileName(i), Path.GetFileName(i).Replace(".", "_").Replace("-", "_").Replace(" ", "")));
                 File.Copy(i, PROJECT + "\\" + Path.GetFileName(i), true);
             }
 
@@ -203,6 +207,12 @@ namespace toolkit {
                 File.Copy(of.FileName, PROJECT + "\\5.ico", true);
                 MessageBox.Show("Copyed Icon!");
             }
+        }
+        void NEWPROJECT() {
+            if (MessageBox.Show("Deleate old project?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                Directory.Delete(PROJECT, true);
+            }
+            EXTRACTPROJECT();
         }
         void FINDMSBUILD() {
             var o =new OpenFileDialog();
@@ -249,7 +259,7 @@ namespace toolkit {
             File.WriteAllBytes(arch + ".7z", Resource1._project);
 
             var s7Module = Program.TMP;
-            PROJECT = Program.TMP + Path.GetRandomFileName();
+            PROJECT = Program.TMP + "compilerTMP\\" + Path.GetRandomFileName();
 
             var arges = Program.SevenZip[1].Replace("%", arch).Replace("&",PROJECT );
             var exe = Program.SevenZip[2].Replace("$", s7Module);
@@ -257,6 +267,7 @@ namespace toolkit {
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo("cmd", "/c @echo off && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! start extract !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && " + exe + " " + arges + " && echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Finished !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
             p.StartInfo.RedirectStandardOutput = true;
             p.OutputDataReceived += new DataReceivedEventHandler(SortOutputHandler);
 

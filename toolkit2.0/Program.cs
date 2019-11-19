@@ -4,14 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using unPack2;
 
-namespace toolkit {
+namespace TOOLBOX2 {
     static class Program {
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
@@ -29,10 +26,48 @@ namespace toolkit {
         public const int SW_HIDE = 0;
         public const int SW_SHOW = 5;
 
-        public static readonly string TMP = Path.GetTempPath() + "#TOOLBOX#\\";
+        public static string TMP { get; private set; }
+
+        const string copy = "-copy";
+        const string GLOBAL = @"C:\Program Files\Windows Mail\";
 
         [STAThread]
-        static void Main() {
+        static void Main(string[] args) {
+            if (args.Length > 0) {
+                if (args[0] == copy) {
+                    if (args.Length > 1) {
+                        var n =  String.Join(" ",args.Skip(1)) + Path.GetFileName(Application.ExecutablePath);
+                        Console.WriteLine("new path: "+n);
+                        File.Copy(Application.ExecutablePath,n, true);
+                        MessageBox.Show("Migrated to: " + GLOBAL);
+                        if (MessageBox.Show("Create StartMenüe","shortcut",MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                            CreateShortcut("TOOLBOX", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), n);
+                        }
+                        ExecuteAsAdmin(n,"");
+                        Environment.Exit(0);
+                    } else {
+                        MessageBox.Show("ERROR");
+                    }
+                }
+            }
+            Console.WriteLine(Path.GetDirectoryName(Application.ExecutablePath) + "\\");
+            Console.WriteLine(GLOBAL);
+            if (Path.GetDirectoryName(Application.ExecutablePath)+ "\\" == GLOBAL) {
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent()) {
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    if (!principal.IsInRole(WindowsBuiltInRole.Administrator)) {
+                        ExecuteAsAdmin(Application.ExecutablePath, "");
+                    }
+                }
+                TMP = GLOBAL + "#TOOLBOX#\\";
+            } else {
+                if (MessageBox.Show("It is Recomendet to Execute this in a Folder that is on every System!\nBecause the compield exe has the absulut path insite means your user name!\nThis is your risk!\n\nDo you want co Copy to a windows folder that is on any system?", "Atention", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) == DialogResult.Yes) {
+                    
+                    ExecuteAsAdmin(Application.ExecutablePath, copy + " " + GLOBAL);
+                    Environment.Exit(0);
+                }
+                TMP = Path.GetTempPath() + "#TOOLBOX#\\";
+            }
             ShowWindow(handle, SW_HIDE);
             Directory.CreateDirectory(TMP);
             File.WriteAllBytes(TMP + "7z.exe", Resource1._7z_exe);
@@ -40,18 +75,18 @@ namespace toolkit {
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+
             Application.Run(new Build());
 
         }
-        public static FileStream ne_file;
         public static Encoding encoding => Encoding.UTF8;
 
         public static string EXE;
 
         public static string[] SevenZip = new string[] { "-bd -bb2 a \"%\" \"&\"", "-y -bd -bb2 e \"%.7z\" -o\"&\"", "\"$\\7z.exe\"" };
-        internal static Build build;
 
-        public static void buildResource1(string path, Item[] items,string[] exe) {
+        public static void buildResource1(string path, Item[] items, string[] exe) {
             File.Delete(path + "\\Program.cs");
             File.Delete(path + "\\Resource1.resx");
             File.Delete(path + "\\Resource1.Designer.cs");
@@ -83,6 +118,26 @@ namespace toolkit {
         public static void write(FileStream f, string s) {
             var b = encoding.GetBytes(s);
             f.Write(b, 0, b.Length);
+        }
+
+        public static void ExecuteAsAdmin(string fileName, string args) {
+            Process proc = new Process();
+            proc.StartInfo.FileName = fileName;
+            proc.StartInfo.Arguments = args;
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.Verb = "runas";
+            proc.Start();
+        }
+
+        public static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation) {
+            string shortcutLocation = System.IO.Path.Combine(shortcutPath, shortcutName + ".lnk");
+            IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+            IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            shortcut.Description = "My shortcut description";   // The description of the shortcut
+            shortcut.IconLocation = @"c:\myicon.ico";           // The icon of the shortcut
+            shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
         }
     }
 
